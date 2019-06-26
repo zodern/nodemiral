@@ -1,9 +1,14 @@
 # nodemiral (node + admiral) [![Build Status](https://travis-ci.org/arunoda/nodemiral.png?branch=master)](https://travis-ci.org/arunoda/nodemiral)
 ### Server Automation for NodeJS over SSH
 
+Fork of https://github.com/arunoda/nodemiral
+
+Changes:
+- Update ssh2
+
 ## Install
 ~~~js
-npm install nodemiral
+npm install @zodern/nodemiral
 ~~~
 
 ## Features
@@ -16,7 +21,7 @@ npm install nodemiral
 
 ## Example
 ~~~js
-var nodemiral = require('nodemiral');
+var nodemiral = require('@zodern/nodemiral');
 var session = nodemiral.session('hostname', {username: 'root', password: 'password'});
 
 session.execute('uname -a', function(err, code, logs) {

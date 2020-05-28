@@ -4,7 +4,8 @@
 Fork of https://github.com/arunoda/nodemiral
 
 Changes:
-- Update ssh2
+- Update ssh2 and other dependencies
+- Fix testing on windows
 
 ## Install
 ~~~js

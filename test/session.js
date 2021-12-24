@@ -1,5 +1,4 @@
 var Session = require('../lib/session');
-var helpers = require('../lib/helpers');
 var SSH = require('../lib/ssh');
 var assert = require('assert');
 var fs = require('fs');
@@ -78,7 +77,7 @@ suite('Session', function() {
 
     test('get two client', function(done) {
       var session = new Session('host', {username: 'u', password: 'p'});
-      session._withSshClient(function(client, close) {
+      session._withSshClient(function(_client, close) {
         close();
         session._withSshClient(function(client2, close2) {
           client2.close = done;
@@ -214,7 +213,7 @@ suite('Session', function() {
       fs.writeFileSync(src, '<%= name %>');
 
       var client = {
-        putContent: function(content, _dest, callback) {
+        putContent: function(_content, _dest, callback) {
           callback(new Error());
         }
       };
@@ -253,7 +252,7 @@ suite('Session', function() {
         assert.ok(close.called);
         done();
       });
-    }); 
+    });
 
     test('execute and okay', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
@@ -275,20 +274,20 @@ suite('Session', function() {
       };
       var close = sinon.stub();
       session._withSshClient.callsArgWith(0, client, close);
-      session.execute(shellCommand, options, function(err, code, logs) {
+      session.execute(shellCommand, options, function(err, _code, logs) {
         assert.ifError(err);
         assert.ok(close.called);
         assert.ok(logs.stderr);
         assert.ok(logs.stdout);
         done();
       });
-    }); 
+    });
   });
 
   suite('.executeScript', function() {
     test('file exists', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      session.execute = function(shellCommand, options, callback) {
+      session.execute = function(shellCommand, _options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
@@ -302,7 +301,7 @@ suite('Session', function() {
 
     test('file not exists', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      session.execute = function(shellCommand, options, callback) {
+      session.execute = function(shellCommand, _options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
@@ -315,7 +314,7 @@ suite('Session', function() {
 
     test('with ejs', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      session.execute = function(shellCommand, options, callback) {
+      session.execute = function(shellCommand, _options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
@@ -333,7 +332,7 @@ suite('Session', function() {
         openDelimiter: '{',
         closeDelimiter: '}'
       }});
-      session.execute = function(shellCommand, options, callback) {
+      session.execute = function(shellCommand, _options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };

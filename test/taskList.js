@@ -3,7 +3,7 @@ var Session = require('../lib/session');
 var assert = require('assert');
 
 suite('TaskList', function() {
-  
+
 test('register and run', function(done) {
     var optionsList = [];
     var session = new Session('host');
@@ -333,7 +333,7 @@ test('register and run', function(done) {
     var taskList = new TaskList('simple', {pretty: false});
     taskList.t1('Simple Name');
     taskList.t2('Simple Name');
-    
+
     taskList.run(sessions, function(summaryMap) {
       assert.deepEqual(execOrder, ["t1::h1", "t1::h2", "t2::h1", "t2::h2"]);
       done();
@@ -362,7 +362,7 @@ test('register and run', function(done) {
     var taskList = new TaskList('simple', {pretty: false});
     taskList.t1('Simple Name');
     taskList.t2('Simple Name');
-    
+
     taskList.run(sessions, {series: true}, function(summaryMap) {
       assert.deepEqual(execOrder, ["t1::h1", "t2::h1", "t1::h2", "t2::h2"]);
       done();

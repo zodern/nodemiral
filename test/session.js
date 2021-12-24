@@ -329,15 +329,16 @@ suite('Session', function() {
 
     test('with ejs options', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'}, {ejs: {
-        open: '{{',
-        close: '}}'
+        delimiter: '!',
+        openDelimiter: '{',
+        closeDelimiter: '}'
       }});
       session.execute = function(shellCommand, options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
       var file = tempFile();
-      fs.writeFileSync(file, 'ls {{= options }} /');
+      fs.writeFileSync(file, 'ls {!= options !} /');
       session.executeScript(file, {vars: {options: '-all'}}, function() {
         fs.unlinkSync(file);
         done();

@@ -113,7 +113,6 @@ suite('Session', function() {
         putFile: function(_src, _dest, _options, callback) {
           assert.equal(_src, src);
           assert.equal(_dest, dest);
-          assert.deepEqual(_options, {});
           callback(null);
         }
       };

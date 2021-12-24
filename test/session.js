@@ -5,8 +5,11 @@ var assert = require('assert');
 var fs = require('fs');
 var sinon = require('sinon');
 var os = require('os');
+var path = require('path');
 
-var tempPath = os.tmpdir();
+function tempFile () {
+  return path.join(os.tmpdir(), Math.ceil(Math.random() * 9999999).toString());
+}
 
 suite('Session', function() {
   suite('_getSshConnInfo', function() {
@@ -178,7 +181,7 @@ suite('Session', function() {
 
     test('vars with success', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      var src = tempPath + Math.ceil(Math.random() * 999999999);
+      var src = tempFile();
       var dest = "dest";
       var options = {vars: {name: 'arunoda'}};
       fs.writeFileSync(src, '<%= name %>');
@@ -206,7 +209,7 @@ suite('Session', function() {
 
     test('vars with failed', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      var src = tempPath + Math.ceil(Math.random() * 999999999);
+      var src = tempFile();
       var dest = "dest";
       var options = {vars: {name: 'arunoda'}};
       fs.writeFileSync(src, '<%= name %>');
@@ -290,7 +293,7 @@ suite('Session', function() {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
-      var file = tempPath + Math.ceil(Math.random() * 9999999);
+      var file = tempFile();
       fs.writeFileSync(file, 'ls -all /');
       session.executeScript(file, {}, function() {
         fs.unlinkSync(file);
@@ -317,7 +320,7 @@ suite('Session', function() {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
-      var file = tempPath + Math.ceil(Math.random() * 9999999);
+      var file = tempFile();
       fs.writeFileSync(file, 'ls <%= options %> /');
       session.executeScript(file, {vars: {options: '-all'}}, function() {
         fs.unlinkSync(file);
@@ -334,7 +337,7 @@ suite('Session', function() {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
-      var file = tempPath + Math.ceil(Math.random() * 9999999);
+      var file = tempFile();
       fs.writeFileSync(file, 'ls {{= options }} /');
       session.executeScript(file, {vars: {options: '-all'}}, function() {
         fs.unlinkSync(file);

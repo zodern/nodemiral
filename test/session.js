@@ -1,5 +1,4 @@
 var Session = require('../lib/session');
-var helpers = require('../lib/helpers');
 var SSH = require('../lib/ssh');
 var assert = require('assert');
 var fs = require('fs');
@@ -325,17 +324,17 @@ suite('Session', function() {
       });
     });
 
-    test('with ejs options', function(done) {
+    test.only('with ejs options', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'}, {ejs: {
-        open: '{{',
-        close: '}}'
+        openDelimiter: '{{',
+        closeDelimiter: '}}'
       }});
       session.execute = function(shellCommand, options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
       var file = tempPath + Math.ceil(Math.random() * 9999999);
-      fs.writeFileSync(file, 'ls {{= options }} /');
+      fs.writeFileSync(file, 'ls {{%= options %}} /');
       session.executeScript(file, {vars: {options: '-all'}}, function() {
         fs.unlinkSync(file);
         done();

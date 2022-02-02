@@ -1,5 +1,4 @@
 var SSH = require('../lib/ssh');
-var SSH2 = require('ssh2');
 var sinon = require('sinon');
 var assert = require('assert');
 var EventEmitter = require('events').EventEmitter;

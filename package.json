@@ -17,6 +17,6 @@
     "sinon": "1.14.x"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "mocha -u tdd"
   }
 }

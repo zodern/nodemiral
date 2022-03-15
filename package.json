@@ -9,7 +9,7 @@
     "debug": "^4.1.1",
     "ejs": "2.5.5",
     "progress": "^2.0.3",
-    "ssh2": "^0.8.4",
+    "ssh2": "1.4.0",
     "underscore": "^1.13.1"
   },
   "devDependencies": {

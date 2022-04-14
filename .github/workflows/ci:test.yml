@@ -4,11 +4,15 @@ on:
   - pull_request
 jobs:
   test:
-    name: Continuous integration (test)
+    name: Test node ${{ matrix.node }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '10', '14', '16', 'lts/*' ]
     steps:
       - uses: actions/checkout@v2
-      - uses: bahmutov/npm-install@v1
+      - uses: actions/setup-node@v3
         with:
-          useRollingCache: true
+          node-version: ${{ matrix.node }}
+      - run: npm install
       - run: npm test

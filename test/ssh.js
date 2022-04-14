@@ -1,5 +1,4 @@
 var SSH = require('../lib/ssh');
-var SSH2 = require('ssh2');
 var sinon = require('sinon');
 var assert = require('assert');
 var EventEmitter = require('events').EventEmitter;
@@ -64,8 +63,8 @@ suite('SSH', function() {
         done();
       });
 
-      stream.emit('data', new Buffer('stdout'));
-      stream.stderr.emit('data', new Buffer('stderr'));
+      stream.emit('data', Buffer.from('stdout'));
+      stream.stderr.emit('data', Buffer.from('stderr'));
       stream.emit('close', 0, 'SIGINT');
     });
   });

@@ -1,12 +1,14 @@
 var Session = require('../lib/session');
-var helpers = require('../lib/helpers');
 var SSH = require('../lib/ssh');
 var assert = require('assert');
 var fs = require('fs');
 var sinon = require('sinon');
 var os = require('os');
+var path = require('path');
 
-var tempPath = os.tmpdir();
+function tempFile () {
+  return path.join(os.tmpdir(), Math.ceil(Math.random() * 9999999).toString());
+}
 
 suite('Session', function() {
   suite('_getSshConnInfo', function() {
@@ -75,7 +77,7 @@ suite('Session', function() {
 
     test('get two client', function(done) {
       var session = new Session('host', {username: 'u', password: 'p'});
-      session._withSshClient(function(client, close) {
+      session._withSshClient(function(_client, close) {
         close();
         session._withSshClient(function(client2, close2) {
           client2.close = done;
@@ -110,7 +112,6 @@ suite('Session', function() {
         putFile: function(_src, _dest, _options, callback) {
           assert.equal(_src, src);
           assert.equal(_dest, dest);
-          assert.deepEqual(_options, {});
           callback(null);
         }
       };
@@ -178,7 +179,7 @@ suite('Session', function() {
 
     test('vars with success', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      var src = tempPath + Math.ceil(Math.random() * 999999999);
+      var src = tempFile();
       var dest = "dest";
       var options = {vars: {name: 'arunoda'}};
       fs.writeFileSync(src, '<%= name %>');
@@ -206,13 +207,13 @@ suite('Session', function() {
 
     test('vars with failed', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      var src = tempPath + Math.ceil(Math.random() * 999999999);
+      var src = tempFile();
       var dest = "dest";
       var options = {vars: {name: 'arunoda'}};
       fs.writeFileSync(src, '<%= name %>');
 
       var client = {
-        putContent: function(content, _dest, callback) {
+        putContent: function(_content, _dest, callback) {
           callback(new Error());
         }
       };
@@ -251,7 +252,7 @@ suite('Session', function() {
         assert.ok(close.called);
         done();
       });
-    }); 
+    });
 
     test('execute and okay', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
@@ -273,24 +274,24 @@ suite('Session', function() {
       };
       var close = sinon.stub();
       session._withSshClient.callsArgWith(0, client, close);
-      session.execute(shellCommand, options, function(err, code, logs) {
+      session.execute(shellCommand, options, function(err, _code, logs) {
         assert.ifError(err);
         assert.ok(close.called);
         assert.ok(logs.stderr);
         assert.ok(logs.stdout);
         done();
       });
-    }); 
+    });
   });
 
   suite('.executeScript', function() {
     test('file exists', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      session.execute = function(shellCommand, options, callback) {
+      session.execute = function(shellCommand, _options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
-      var file = tempPath + Math.ceil(Math.random() * 9999999);
+      var file = tempFile();
       fs.writeFileSync(file, 'ls -all /');
       session.executeScript(file, {}, function() {
         fs.unlinkSync(file);
@@ -300,7 +301,7 @@ suite('Session', function() {
 
     test('file not exists', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      session.execute = function(shellCommand, options, callback) {
+      session.execute = function(shellCommand, _options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
@@ -313,11 +314,11 @@ suite('Session', function() {
 
     test('with ejs', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'});
-      session.execute = function(shellCommand, options, callback) {
+      session.execute = function(shellCommand, _options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
-      var file = tempPath + Math.ceil(Math.random() * 9999999);
+      var file = tempFile();
       fs.writeFileSync(file, 'ls <%= options %> /');
       session.executeScript(file, {vars: {options: '-all'}}, function() {
         fs.unlinkSync(file);
@@ -327,15 +328,16 @@ suite('Session', function() {
 
     test('with ejs options', function(done) {
       var session = new Session('host', {username: 'root', password: 'kuma'}, {ejs: {
-        open: '{{',
-        close: '}}'
+        delimiter: '!',
+        openDelimiter: '{',
+        closeDelimiter: '}'
       }});
-      session.execute = function(shellCommand, options, callback) {
+      session.execute = function(shellCommand, _options, callback) {
         assert.equal(shellCommand, 'ls -all /');
         callback();
       };
-      var file = tempPath + Math.ceil(Math.random() * 9999999);
-      fs.writeFileSync(file, 'ls {{= options }} /');
+      var file = tempFile();
+      fs.writeFileSync(file, 'ls {!= options !} /');
       session.executeScript(file, {vars: {options: '-all'}}, function() {
         fs.unlinkSync(file);
         done();

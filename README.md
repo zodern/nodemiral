@@ -1,4 +1,4 @@
-# nodemiral (node + admiral) [![Build Status](https://travis-ci.org/arunoda/nodemiral.png?branch=master)](https://travis-ci.org/arunoda/nodemiral)
+# nodemiral (node + admiral) ![Build Status](https://img.shields.io/github/workflow/status/zodern/nodemiral/ci:test/master?style=flat-square)
 ### Server Automation for NodeJS over SSH
 
 Fork of https://github.com/arunoda/nodemiral

@@ -1,6 +1,6 @@
 {
   "name": "@zodern/nodemiral",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Server Automation for NodeJS over SSH",
   "main": "lib/nodemiral.js",
   "dependencies": {

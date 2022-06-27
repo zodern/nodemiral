@@ -7,7 +7,7 @@
     "async": "^3.2.2",
     "colors": "^1.4.0",
     "debug": "^4.3.3",
-    "ejs": "^2.7.4",
+    "@zodern/ejs": "^2.7.5",
     "progress": "^2.0.3",
     "ssh2-classic": "^0.8.10",
     "underscore": "^1.13.2"

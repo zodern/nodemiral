@@ -3,6 +3,11 @@
   "version": "1.4.1",
   "description": "Server Automation for NodeJS over SSH",
   "main": "lib/nodemiral.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "github:zodern/nodemiral"
+  },
   "dependencies": {
     "async": "^3.2.2",
     "colors": "^1.4.0",

@@ -9,13 +9,13 @@
     "url": "github:zodern/nodemiral"
   },
   "dependencies": {
-    "async": "^3.2.2",
-    "colors": "^1.4.0",
-    "debug": "^4.3.3",
     "@zodern/ejs": "^2.7.5",
+    "async": "^3.2.6",
+    "colors": "^1.4.0",
+    "debug": "^4.3.7",
     "progress": "^2.0.3",
     "ssh2-classic": "^0.8.10",
-    "underscore": "^1.13.2"
+    "underscore": "^1.13.7"
   },
   "devDependencies": {
     "mocha": "^9.2.2",

@@ -14,7 +14,7 @@
     "colors": "^1.4.0",
     "debug": "^4.3.7",
     "progress": "^2.0.3",
-    "ssh2-classic": "^0.8.10",
+    "ssh2": "^1.16.0",
     "underscore": "^1.13.7"
   },
   "devDependencies": {
